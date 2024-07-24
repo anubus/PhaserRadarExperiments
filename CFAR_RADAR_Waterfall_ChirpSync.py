@@ -52,7 +52,7 @@ from target_detection_dbfs import cfar
    Also, make sure your Pluto firmware is updated to rev 0.38 (or later)
 '''
 import adi
-print(adi.__version__)
+print("ADI Version: ", adi.__version__)
 
 '''Key Parameters'''
 sample_rate = 2e6
@@ -71,7 +71,7 @@ plot_freq = 100e3    # x-axis freq range to plot
 """
 # Instantiate all the Devices
 rpi_ip = "ip:phaser.local"  # IP address of the Raspberry Pi
-sdr_ip = "ip:192.168.2.1"  # "192.168.2.1, or pluto.local"  # IP address of the Transceiver Block
+sdr_ip = "ip:phaser.local:50901"  # "192.168.2.1, or pluto.local"  # IP address of the Transceiver Block
 my_sdr = adi.ad9361(uri=sdr_ip)
 my_phaser = adi.CN0566(uri=rpi_ip, sdr=my_sdr)
 
@@ -243,10 +243,10 @@ cfar_toggle = False
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Interactive FFT")
-        self.setGeometry(0, 0, 400, 400)  # (x,y, width, height)
+        self.setWindowTitle("CFAR Chirpsync")
+        self.setGeometry(0, 0, 600, 600)  # (x,y, width, height)
         #self.setFixedWidth(600)
-        self.setWindowState(QtCore.Qt.WindowMaximized)
+        #self.setWindowState(QtCore.Qt.WindowMaximized)
         self.num_rows = 12
         self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False) #remove the window's close button
         self.UiComponents()
@@ -298,6 +298,7 @@ class Window(QMainWindow):
         self.set_bw.pressed.connect(self.set_range_res)
         layout.addWidget(self.set_bw, 5, 0, 1, 1)
         
+        # Quit button
         self.quit_button = QPushButton("Quit")
         self.quit_button.pressed.connect(self.end_program)
         layout.addWidget(self.quit_button, 30, 0, 4, 4)
@@ -306,7 +307,7 @@ class Window(QMainWindow):
         self.cfar_bias = QSlider(Qt.Horizontal)
         self.cfar_bias.setMinimum(0)
         self.cfar_bias.setMaximum(100)
-        self.cfar_bias.setValue(25)
+        self.cfar_bias.setValue(15)
         self.cfar_bias.setTickInterval(5)
         self.cfar_bias.setMaximumWidth(200)
         self.cfar_bias.setTickPosition(QSlider.TicksBelow)
@@ -322,7 +323,7 @@ class Window(QMainWindow):
         self.cfar_guard = QSlider(Qt.Horizontal)
         self.cfar_guard.setMinimum(1)
         self.cfar_guard.setMaximum(40)
-        self.cfar_guard.setValue(15)
+        self.cfar_guard.setValue(7)
         self.cfar_guard.setTickInterval(4)
         self.cfar_guard.setMaximumWidth(200)
         self.cfar_guard.setTickPosition(QSlider.TicksBelow)
@@ -338,7 +339,7 @@ class Window(QMainWindow):
         self.cfar_ref = QSlider(Qt.Horizontal)
         self.cfar_ref.setMinimum(1)
         self.cfar_ref.setMaximum(100)
-        self.cfar_ref.setValue(16)
+        self.cfar_ref.setValue(7)
         self.cfar_ref.setTickInterval(10)
         self.cfar_ref.setMaximumWidth(200)
         self.cfar_ref.setTickPosition(QSlider.TicksBelow)
@@ -353,7 +354,7 @@ class Window(QMainWindow):
 
         # waterfall level slider
         self.low_slider = QSlider(Qt.Horizontal)
-        self.low_slider.setMinimum(-100)
+        self.low_slider.setMinimum(-80)
         self.low_slider.setMaximum(20)
         self.low_slider.setValue(-100)
         self.low_slider.setTickInterval(5)
@@ -365,7 +366,7 @@ class Window(QMainWindow):
         self.high_slider = QSlider(Qt.Horizontal)
         self.high_slider.setMinimum(-100)
         self.high_slider.setMaximum(20)
-        self.high_slider.setValue(20)
+        self.high_slider.setValue(-20)
         self.high_slider.setTickInterval(5)
         self.high_slider.setMaximumWidth(200)
         self.high_slider.setTickPosition(QSlider.TicksBelow)
@@ -391,6 +392,7 @@ class Window(QMainWindow):
         self.high_label.setMaximumWidth(200)
         layout.addWidget(self.high_label, 18, 1)
 
+        # receive antenna steering angle
         self.steer_slider = QSlider(Qt.Horizontal)
         self.steer_slider.setMinimum(-80)
         self.steer_slider.setMaximum(80)
@@ -571,8 +573,8 @@ def update():
         stop_index = start_index + good_ramp_samples
         rx_bursts[burst] = sum_data[start_index:stop_index]
         burst_data = np.ones(fft_size, dtype=complex)*1e-10
-        #win_funct = np.blackman(len(rx_bursts[burst]))
-        win_funct = np.ones(len(rx_bursts[burst]))
+        win_funct = np.blackman(len(rx_bursts[burst]))
+        #win_funct = np.ones(len(rx_bursts[burst]))
         burst_data[start_offset_samples:(start_offset_samples+good_ramp_samples)] = rx_bursts[burst]*win_funct
 
     sp = np.absolute(np.fft.fft(burst_data))
