@@ -49,7 +49,7 @@ plt.close('all')
    Also, make sure your Pluto firmware is updated to rev 0.38 (or later)
 '''
 import adi
-print(adi.__version__)
+print("ADI versin: ", adi.__version__)
 
 '''Key Parameters'''
 sample_rate = 5e6 
@@ -70,7 +70,7 @@ f = "phaserRadarData.npy"
 """
 # Instantiate all the Devices
 rpi_ip = "ip:phaser.local"  # IP address of the Raspberry Pi
-sdr_ip = "ip:192.168.2.1"  # "192.168.2.1, or pluto.local"  # IP address of the Transceiver Block
+sdr_ip = "ip:phaser.local:50901"  # "192.168.2.1, or pluto.local"  # IP address of the Transceiver Block
 my_sdr = adi.ad9361(uri=sdr_ip)
 my_phaser = adi.CN0566(uri=rpi_ip, sdr=my_sdr)
 
@@ -82,7 +82,7 @@ my_phaser.load_phase_cal()
 for i in range(0, 8):
     my_phaser.set_chan_phase(i, 0)
 
-gain_list = [127] * 8
+gain_list = [127] * 8  # perhaps max sensitivity since a shapted beam is unnecessary?
 #gain_list = [8, 34, 84, 127, 127, 84, 34, 8]  # Blackman taper
 for i in range(0, len(gain_list)):
     my_phaser.set_chan_gain(i, gain_list[i], apply_cal=True)
@@ -111,6 +111,7 @@ my_sdr.tx_hardwaregain_chan1 = int(tx_gain)   # must be between 0 and -88
 # Configure the ADF4159 Ramping PLL
 vco_freq = int(output_freq + signal_freq + center_freq)
 BW = chirp_BW
+print("Chirp BW: ", BW)
 num_steps = int(ramp_time)    # in general it works best if there is 1 step per us
 my_phaser.frequency = int(vco_freq / 4)
 my_phaser.freq_dev_range = int(BW / 4)      # total freq deviation of the complete freq ramp in Hz
@@ -157,7 +158,7 @@ tdd.enable = True
 ramp_time = int(my_phaser.freq_dev_time) # - begin_offset_time)
 ramp_time_s = ramp_time / 1e6
 begin_offset_time = 0.1 * ramp_time_s   # time in seconds
-print("actual freq dev time = ", ramp_time)
+print("Actual freq dev time (usec) = ", ramp_time)
 good_ramp_samples = int((ramp_time_s - begin_offset_time) * sample_rate)
 start_offset_time = tdd.channel[0].on_ms/1e3 + begin_offset_time
 start_offset_samples = int(start_offset_time * sample_rate)
@@ -208,10 +209,13 @@ dist = (freq - signal_freq) * c / (2 * slope)
 # Resolutions
 R_res = c / (2 * BW)
 v_res = wavelength / (2 * num_bursts * PRI)
+print("Range resolution (m): ", R_res)
+print("Velocity resolution (m/s): ", v_res)
 
 # Doppler spectrum limits
 max_doppler_freq = PRF / 2
 max_doppler_vel = max_doppler_freq * wavelength / 2
+print("Max velocity (m/s): ", max_doppler_vel)
 
 
 # %%
@@ -258,7 +262,7 @@ def get_radar_data():
     rx_bursts_fft = np.fft.fftshift(abs(np.fft.fft2(rx_bursts)))
     range_doppler_data = np.log10(rx_bursts_fft).T
     radar_data = range_doppler_data
-    #radar_data = np.clip(radar_data, 0, 6)  # clip the data to control the max spectrogram scale
+    radar_data = np.clip(radar_data, 4, 8)  # clip the data to control the max spectrogram scale
     return rx_bursts, radar_data
 
 # %%
@@ -269,9 +273,9 @@ all_data = []
 if plot_data == True:
     range_doppler_fig, ax = plt.subplots(figsize=(14, 7))
     extent = [-max_doppler_vel, max_doppler_vel, dist.min(), dist.max()]
-    print(extent)
+    print("Extent [vel,range]: ", extent)
     cmaps = ['inferno', 'plasma']
-    cmn = cmaps[0]
+    cmn = cmaps[1]
     try:
         range_doppler = ax.imshow(radar_data, aspect='auto',
             extent=extent, origin='lower', cmap=matplotlib.colormaps.get_cmap(cmn),
@@ -304,7 +308,7 @@ try:
         if plot_data == True:
             range_doppler.set_data(radar_data)
             plt.show(block=False)
-            plt.pause(.1)
+            plt.pause(0.1)
 except KeyboardInterrupt:  # press ctrl-c to stop the loop
     pass
 

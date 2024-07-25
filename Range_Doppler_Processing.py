@@ -124,7 +124,7 @@ def get_radar_data():
         for r in range(range_delete):
             start_bin = int(len(radar_data)/2)
             radar_data[start_bin+r, :] = np.ones(num_chirps)*4.2
-    radar_data = np.clip(radar_data, 4, 5.5)  # clip the data to control the max spectrogram scale
+    radar_data = np.clip(radar_data, 4, 6.5)  # clip the data to control the max spectrogram scale
     return radar_data
 
 # %%
@@ -163,7 +163,7 @@ try:
         radar_data = get_radar_data()
         range_doppler.set_data(radar_data)
         plt.show(block=False)
-        plt.pause(0.1)
+        plt.pause(0.2)
 except KeyboardInterrupt:  # press ctrl-c to stop the loop
     pass
 
