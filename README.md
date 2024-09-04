@@ -1,7 +1,10 @@
-# PhaserRadarLabs
-Example Radar programs for the Phaser (CN0566)
+# PhaserRadarExperiments
 
-These are example radar programs for the Phaser (www.analog.com/cn0566).
+Radar experiments using the Analog Devices Phaser (CN0566)
+
+Forked and then detached from Jon Kraft's excellent initial examples at:
+   https://github.com/jonkraft/PhaserRadarLabs
+Phaser product page (www.analog.com/cn0566).
 Getting started instructions are here:  https://wiki.analog.com/phaser
-Video walkthrough of these files are available here:  https://www.youtube.com/@jonkraft
+Jon's great video walkthroughs of Phaser and other things:  https://www.youtube.com/@jonkraft
 
