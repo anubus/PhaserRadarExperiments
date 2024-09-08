@@ -1,0 +1,59 @@
+Didn't find custom config, looking for default.
+Attempting to connect to CN0566 via ip:localhost...
+CN0566 on ip.localhost not found, connecting via ip:phaser.local...
+Found CN0566. Connecting to PlutoSDR via shared context...
+Found SDR on shared phaser.local.
+Found signal freq file,  10406250000.0
+Calibrating gain and phase - place antenna at mechanical boresight in front of the array, then press enter...Calibrating gain mismatch between SDR channels, then saving cal file...
+channel mismatch:  -2.6781904917235715  dB
+Calibrating Gain, verbosely, then saving cal file...
+Peak bin at  517  out of  1024
+Calibrating Element 0
+measuring element:  0
+Measured signal level (ADC counts): 113.29537247866695
+Calibrating Element 1
+measuring element:  1
+Measured signal level (ADC counts): 96.52821921870074
+Calibrating Element 2
+measuring element:  2
+Measured signal level (ADC counts): 101.02690820310366
+Calibrating Element 3
+measuring element:  3
+Measured signal level (ADC counts): 102.31610101514713
+Calibrating Element 4
+measuring element:  4
+Measured signal level (ADC counts): 92.55774172175168
+Calibrating Element 5
+measuring element:  5
+Measured signal level (ADC counts): 76.43824453304765
+Calibrating Element 6
+measuring element:  6
+Measured signal level (ADC counts): 94.67773135813029
+Calibrating Element 7
+measuring element:  7
+Measured signal level (ADC counts): 97.29390352954779
+gcalibrated values:  [113.29537247866695, 96.52821921870074, 101.02690820310366, 102.31610101514713, 92.55774172175168, 76.43824453304765, 94.67773135813029, 97.29390352954779]
+Calibrating Phase, verbosely, then saving cal file...
+Peak bin at  509  out of  1024
+Calibrating Element 0
+Null found at  -168.75
+Phase Delta to correct:  -11.25
+Calibrating Element 1
+Null found at  171.5625
+Phase Delta to correct:  8.4375
+Calibrating Element 2
+Null found at  -174.375
+Phase Delta to correct:  -5.625
+Calibrating Element 3
+Null found at  -70.3125
+Phase Delta to correct:  -109.6875
+Calibrating Element 4
+Null found at  -177.1875
+Phase Delta to correct:  -2.8125
+Calibrating Element 5
+Null found at  -171.5625
+Phase Delta to correct:  -8.4375
+Calibrating Element 6
+Null found at  -165.9375
+Phase Delta to correct:  -14.0625
+Done calibration

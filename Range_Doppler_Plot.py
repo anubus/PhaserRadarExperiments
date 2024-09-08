@@ -62,7 +62,7 @@ chirp_BW = 500e6
 ramp_time = 500  # us
 num_chirps = 128
 plot_data = True
-save_data = False   # saves data for later processing (use "Range_Doppler_Processing.py")
+save_data = True   # saves data for later processing (use "Range_Doppler_Processing.py")
 f = "phaserRadarData.npy"
 
 # %%
@@ -275,7 +275,7 @@ if plot_data == True:
     extent = [-max_doppler_vel, max_doppler_vel, dist.min(), dist.max()]
     print("Extent [vel,range]: ", extent)
     cmaps = ['inferno', 'plasma']
-    cmn = cmaps[1]
+    cmn = cmaps[0]
     try:
         range_doppler = ax.imshow(radar_data, aspect='auto',
             extent=extent, origin='lower', cmap=matplotlib.colormaps.get_cmap(cmn),
