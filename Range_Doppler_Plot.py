@@ -62,7 +62,7 @@ chirp_BW = 500e6
 ramp_time = 500  # us
 num_chirps = 128
 plot_data = True
-save_data = True   # saves data for later processing (use "Range_Doppler_Processing.py")
+save_data = False   # saves data for later processing (use "Range_Doppler_Processing.py")
 f = "phaserRadarData.npy"
 
 # %%
@@ -89,6 +89,7 @@ for i in range(0, len(gain_list)):
 
 # Setup Raspberry Pi GPIO states
 my_phaser._gpios.gpio_tx_sw = 0  # 0 = TX_OUT_2, 1 = TX_OUT_1
+print("Tansmit Out (0 = TX_OUT_2, 1 = TX_OUT_1):", my_phaser._gpios.gpio_tx_sw)
 my_phaser._gpios.gpio_vctrl_1 = 1 # 1=Use onboard PLL/LO source  (0=disable PLL and VCO, and set switch to use external LO input)
 my_phaser._gpios.gpio_vctrl_2 = 1 # 1=Send LO to transmit circuitry  (0=disable Tx path, and send LO to LO_OUT)
 
