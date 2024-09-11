@@ -82,6 +82,22 @@ max_doppler_vel = max_doppler_freq * wavelength / 2
 
 print("sample_rate = ", sample_rate/1e6, "MHz, ramp_time = ", int(ramp_time_s*(1e6)), "us, num_chirps = ", num_chirps)
 
+num_samples = 128  # 371 for phaserRadarData_horn.npy
+# first try at an MTI pulse canceler
+def pulse_canceller(radar_data):
+    global num_chirps, num_samples
+    rx_chirps = []
+    rx_chirps = radar_data
+    # 2 chirp canceller
+    Chirp2P = np.empty([num_chirps, num_samples])*1j
+    for chirp in range(num_chirps-1):
+        chirpI = rx_chirps[chirp,:]
+        chirpI1 = rx_chirps[chirp+1,:]
+        chirp_correlation = np.correlate(chirpI, chirpI1, 'valid')
+        angle_diff = np.angle(chirp_correlation, deg=False) # returns radians
+        Chirp2P[chirp,:] = (chirpI1 - chirpI * np.exp(-1j*angle_diff[0]))
+    return Chirp2P
+
 
 # %%
 # Function to process data
@@ -131,6 +147,11 @@ def get_radar_data():
 # %%
     
 radar_data = get_radar_data()
+print("Shape of radar_data:", shape(radar_data)) 
+
+# try the chirp canceller
+radar_data = pulse_canceller(radar_data)
+
 
 range_doppler_fig, ax = plt.subplots(figsize=(14, 7))
 extent = [-max_doppler_vel, max_doppler_vel, dist.min(), dist.max()]

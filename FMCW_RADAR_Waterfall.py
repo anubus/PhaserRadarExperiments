@@ -96,8 +96,8 @@ my_sdr.rx_hardwaregain_chan1 = int(30)  # must be between -3 and 70
 my_sdr.tx_lo = int(center_freq)
 my_sdr.tx_enabled_channels = [0, 1]
 my_sdr.tx_cyclic_buffer = True  # must set cyclic buffer to true for the tdd burst mode.  Otherwise Tx will turn on and off randomly
-my_sdr.tx_hardwaregain_chan0 = -88  # must be between 0 and -88
-my_sdr.tx_hardwaregain_chan1 = -0  # must be between 0 and -88
+my_sdr.tx_hardwaregain_chan0 = -80  # must be between 0 and -88, -80 suppresses out (not sure what this one affects)
+my_sdr.tx_hardwaregain_chan1 = -0  # must be between 0 and -88, 0 is max out (seems to affect both OUT channels))
 
 # Configure the ADF4159 Rampling PLL
 output_freq = 12.145e9

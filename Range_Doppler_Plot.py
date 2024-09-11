@@ -107,7 +107,7 @@ my_sdr.tx_lo = int(center_freq)
 my_sdr.tx_enabled_channels = [0, 1]
 my_sdr.tx_cyclic_buffer = True      # must set cyclic buffer to true for the tdd burst mode
 my_sdr.tx_hardwaregain_chan0 = -88   # must be between 0 and -88
-my_sdr.tx_hardwaregain_chan1 = int(tx_gain)   # must be between 0 and -88
+my_sdr.tx_hardwaregain_chan1 = int(tx_gain)   # must be between 0 and -88, (believe this affects both outputs)
 
 # Configure the ADF4159 Ramping PLL
 vco_freq = int(output_freq + signal_freq + center_freq)
@@ -291,10 +291,10 @@ if plot_data == True:
     ax.set_xlabel('Velocity [m/s]', fontsize=22)
     ax.set_ylabel('Range [m]', fontsize=22)
     
-    max_range = 20
+    max_range = 50
     ax.set_xlim([-10, 10])
     ax.set_ylim([0, max_range])
-    ax.set_yticks(np.arange(2, max_range, 2))
+    ax.set_yticks(np.arange(5, max_range, 5))
     plt.xticks(fontsize=20)
     plt.yticks(fontsize=20)
     
