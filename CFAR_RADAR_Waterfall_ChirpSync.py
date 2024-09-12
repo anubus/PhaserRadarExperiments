@@ -64,7 +64,7 @@ default_chirp_bw = 500e6
 ramp_time = 500      # ramp time in us
 num_slices = 100     # this sets how much time will be displayed on the waterfall plot
 fft_size = 1024 * 8
-plot_freq = 100e3    # x-axis freq range to plot
+plot_freq = 150e3    # x-axis freq range to plot
 
 # %%
 """ Program the basic hardware settings
@@ -444,7 +444,7 @@ class Window(QMainWindow):
         tr.translate(0,-sample_rate/2)
         tr.scale(0.35, sample_rate / fft_size)
         self.imageitem.setTransform(tr)
-        zoom_freq = 35e3
+        zoom_freq = 150e3
         self.waterfall.setRange(yRange=(signal_freq, signal_freq + zoom_freq))
         self.waterfall.setTitle("Waterfall Spectrum", **title_style)
         self.waterfall.setLabel("left", "Frequency", units="Hz", **label_style)

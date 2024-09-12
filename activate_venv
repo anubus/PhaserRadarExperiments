@@ -1,4 +1,2 @@
-#!/bin/bash
-
-~/git/PhaserRadarExperiments $ source ~/venv/phaser/bin/activate
+source ~/venv/phaser/bin/activate
 

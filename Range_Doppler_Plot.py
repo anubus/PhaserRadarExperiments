@@ -62,7 +62,7 @@ chirp_BW = 500e6
 ramp_time = 500  # us
 num_chirps = 128
 plot_data = True
-save_data = False   # saves data for later processing (use "Range_Doppler_Processing.py")
+save_data = True   # saves data for later processing (use "Range_Doppler_Processing.py")
 f = "phaserRadarData.npy"
 
 # %%
@@ -263,7 +263,7 @@ def get_radar_data():
     rx_bursts_fft = np.fft.fftshift(abs(np.fft.fft2(rx_bursts)))
     range_doppler_data = np.log10(rx_bursts_fft).T
     radar_data = range_doppler_data
-    radar_data = np.clip(radar_data, 4, 8)  # clip the data to control the max spectrogram scale
+    radar_data = np.clip(radar_data, 3.2, 7.5)  # clip the data to control the max spectrogram scale
     return rx_bursts, radar_data
 
 # %%
