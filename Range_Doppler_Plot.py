@@ -62,7 +62,7 @@ chirp_BW = 500e6
 ramp_time = 500  # us
 num_chirps = 128
 plot_data = True
-save_data = True   # saves data for later processing (use "Range_Doppler_Processing.py")
+save_data = False   # saves data for later processing (use "Range_Doppler_Processing.py")
 f = "phaserRadarData.npy"
 
 # %%
